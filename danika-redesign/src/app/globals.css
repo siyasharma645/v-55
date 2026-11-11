@@ -1,0 +1,213 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/bricolage-grotesque/wdth.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Danika brand palette: the ONLY place colour values live (space-separated RGB channels for Tailwind alpha support).
+       Brick red + deep brick + warm cream + white + warm grey. Hex equivalents in comments. */
+    --c-primary: 143 51 40;          /* #8F3328 primary brick red: header, CTAs, accents, links */
+    --c-primary-dark: 112 39 31;     /* #70271F deep brick: headings, body text, footer, hover/pressed */
+    --c-background: 247 243 237;     /* #F7F3ED warm cream: page + alternating section backgrounds */
+    --c-surface: 255 255 255;        /* #FFFFFF cards, forms, menus */
+    --c-surface-muted: 233 226 218;  /* #E9E2DA warm grey: borders, dividers, input outlines */
+    --c-text: 112 39 31;             /* = deep brick */
+    --c-text-secondary: 118 91 84;   /* #765B54 supporting text only (5.6:1 on cream, 6.2:1 on white) */
+    --c-border: 233 226 218;         /* = warm grey */
+    --c-error: 179 38 30;            /* #B3261E semantic validation error only (6.9:1 on white) */
+    /* Shared corner radius for every button, field, card, menu and widget (see tailwind.config.ts). */
+    --ui-radius: 10px;
+    /* Sticky header bar height: the single source for the bar, the drawer offset and anchor scroll offsets. */
+    --header-h: 4.75rem;          /* 76px below 1100px */
+
+    /* MOTION SYSTEM: the only place animation values live. Tailwind (duration-*, ease-*, shadow-*) and the utilities
+       below all read these, so durations, easing, lift, reveal distance and stagger can never drift apart. */
+    --dur-fast: 150ms;            /* colour / tint changes */
+    --dur-base: 220ms;            /* hover lift, buttons, arrows, menus */
+    --dur-reveal: 600ms;          /* scroll reveal */
+    --dur-image: 700ms;           /* slow, calm image zoom */
+    --ease-out: cubic-bezier(.22, .61, .36, 1);
+    --reveal-y: 18px;             /* scroll-reveal travel */
+    --stagger: 80ms;              /* delay between siblings (see src/lib/motion.ts) */
+    --lift-sm: -2px;              /* buttons */
+    --lift: -4px;                 /* cards */
+    --nudge: 3px;                 /* arrow travel on hover */
+    --zoom: 1.04;                 /* image hover scale (1.03-1.05) */
+    --icon-zoom: 1.08;            /* custom illustration scale */
+  }
+  @media (min-width: 1100px) { :root { --header-h: 5.25rem; } }  /* 84px */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 1rem);   /* anchors land clear of the sticky header */
+    scrollbar-gutter: stable;     /* scroll-locking the page (open drawer) never shifts the layout */
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-white font-sans text-base leading-relaxed text-fg antialiased;
+    overflow-x: clip;
+  }
+  h1, h2, h3, h4 {
+    @apply font-heading font-bold text-primary-dark;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  :focus-visible {
+    /* brick ring on light surfaces, white ring on brick surfaces (`.on-red`) */
+    outline: 3px solid rgb(var(--c-primary));
+    outline-offset: 2px;
+  }
+  .on-red :focus-visible { outline-color: #fff; }
+  .on-light :focus-visible { outline-color: rgb(var(--c-primary)); }   /* white panels inside a red ancestor (menus, drawer) */
+  ::selection { background: rgb(var(--c-primary)); color: #fff; }
+}
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-8; }
+  /* Header bar: wider than the 1240px content column and with fluid gutters, so the logo and CTA sit closer to the screen edges
+     on large displays instead of floating in empty space. Device safe-area insets are always respected. */
+  .header-bar {
+    margin-inline: auto; width: 100%; max-width: 1560px;
+    padding-inline: max(1rem, env(safe-area-inset-left, 0px)) max(1rem, env(safe-area-inset-right, 0px));
+  }
+  @media (min-width: 640px) { .header-bar { padding-inline: max(1.5rem, env(safe-area-inset-left, 0px)) max(1.5rem, env(safe-area-inset-right, 0px)); } }
+  @media (min-width: 1024px) { .header-bar { padding-inline: max(1.5rem, env(safe-area-inset-left, 0px)) max(1.5rem, env(safe-area-inset-right, 0px)); } }
+  @media (min-width: 1280px) { .header-bar { padding-inline: max(2.5rem, env(safe-area-inset-left, 0px)) max(2.5rem, env(safe-area-inset-right, 0px)); } }
+  /* One vertical rhythm for every band: ~52px phones, ~68px tablet, 80px desktop (fluid, no jumps). */
+  .section, .pad-y { padding-block: clamp(3.25rem, 2.25rem + 3.2vw, 5rem); }
+  .eyebrow { @apply mb-4 inline-flex items-center gap-2.5 text-[0.8125rem] font-bold text-primary sm:text-sm; }
+  .eyebrow::before { content: ''; @apply h-1 w-7 bg-primary; }
+  .display { font-family: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif; font-stretch: 78%; font-weight: 800; line-height: .95; letter-spacing: -0.012em; text-wrap: balance; }
+  /* Type scale: h1 48-88px, h2 36-64px, h3 28-48px, h4 20-24px (row and card titles). */
+  .h1 { @apply display text-[clamp(3rem,10.5vw,5.5rem)]; }
+  .h2 { @apply display text-primary-dark text-[clamp(2.25rem,6vw,4rem)]; }
+  .h3 { @apply display text-primary-dark text-[clamp(1.75rem,1.2rem+2.2vw,3rem)]; }
+  .h3-compact { @apply display text-primary-dark text-[clamp(1.75rem,1.3rem+1.4vw,2.5rem)]; }
+  .h4 { @apply font-heading text-xl font-bold leading-tight sm:text-2xl; }
+  .lead { @apply max-w-[38rem] text-[1.0625rem] text-fg-soft sm:text-lg; }
+  .blueprint {
+    background-image:
+      linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+  .card {
+    @apply rounded-card border border-line bg-white shadow-card;
+  }
+  .card-hover {
+    @apply transition duration-200 ease-out hover:-translate-y-1 hover:shadow-lift hover:border-primary;
+  }
+
+  /* ---- Motion utilities (all values come from the tokens in :root) ---- */
+  /* Hover lift for cards and buttons. Hover-capable pointers only, so touch screens never get a stuck lifted card. */
+  .motion-lift { transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out); }
+  @media (hover: hover) { .motion-lift:hover { transform: translateY(var(--lift)); } }
+  .motion-lift:active { transform: translateY(0) scale(.99); transition-duration: var(--dur-fast); }
+
+  /* Button: colour, a small lift and a soft pressed state. Arrows inside travel a few pixels. */
+  .btn-motion { transition: background-color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
+  @media (hover: hover) { .btn-motion:hover { transform: translateY(var(--lift-sm)); } }
+  .btn-motion:active { transform: translateY(0) scale(.98); transition-duration: var(--dur-fast); }
+  .btn-motion .lucide-arrow-right { transition: transform var(--dur-base) var(--ease-out); }
+  @media (hover: hover) { .btn-motion:hover .lucide-arrow-right { transform: translateX(var(--nudge)); } }
+  .btn-shadow { box-shadow: 0 1px 2px rgb(var(--c-primary-dark) / .18), 0 6px 14px -8px rgb(var(--c-primary-dark) / .5); }
+  @media (hover: hover) { .btn-shadow:hover { box-shadow: 0 2px 4px rgb(var(--c-primary-dark) / .18), 0 12px 22px -10px rgb(var(--c-primary-dark) / .6); } }
+  .btn-shadow:active { box-shadow: 0 1px 2px rgb(var(--c-primary-dark) / .2); }
+
+  /* Image zoom inside its own overflow-hidden frame: put .group on the card/frame, .img-zoom on the <img>. */
+  .img-zoom { transition: transform var(--dur-image) var(--ease-out); will-change: transform; }
+  @media (hover: hover) { .group:hover .img-zoom { transform: scale(var(--zoom)); } }
+
+  /* Arrow that nudges when its .group parent is hovered or focused. */
+  .arrow-nudge { transition: transform var(--dur-base) var(--ease-out); }
+  @media (hover: hover) { .group:hover .arrow-nudge, .group:focus-visible .arrow-nudge { transform: translateX(var(--nudge)); } }
+
+  /* Card outline drawn as an overlay so a hover border never changes the card's size or layout. */
+  .card-outline::after { content: ''; position: absolute; inset: 0; z-index: 10; pointer-events: none; border-radius: inherit; border: 1px solid transparent; transition: border-color var(--dur-base) var(--ease-out); }
+  @media (hover: hover) { .card-outline:hover::after { border-color: rgb(var(--c-primary) / .65); } }
+  .card-outline:focus-visible::after { border-color: rgb(var(--c-primary) / .65); }
+
+  /* ---- Selective surface treatments (use on a section; adds depth behind its content, never changes its colour) ---- */
+  .surface { position: relative; isolation: isolate; }
+  .surface::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  /* Warm glow on cream: a whisper of terracotta from one corner. */
+  .surface-cream::before { background: radial-gradient(60% 70% at 100% 0%, rgb(var(--c-primary) / .07), transparent 70%), radial-gradient(45% 50% at 0% 100%, rgb(var(--c-primary-dark) / .035), transparent 70%); }
+  /* Dark brown band: soft brick light from the top right plus a fine dot pattern that fades out toward the left. */
+  .surface-dark::before {
+    background: radial-gradient(55% 90% at 95% 0%, rgb(var(--c-primary) / .38), transparent 70%), radial-gradient(rgb(var(--c-background) / .07) 1px, transparent 1.2px);
+    background-size: auto, 22px 22px;
+    -webkit-mask-image: linear-gradient(100deg, transparent 15%, #000 85%); mask-image: linear-gradient(100deg, transparent 15%, #000 85%);
+  }
+  /* Brick band: gentle highlight top left, deeper tone bottom right. */
+  .surface-red::before { background: radial-gradient(50% 80% at 0% 0%, rgb(255 255 255 / .09), transparent 70%), radial-gradient(55% 80% at 100% 100%, rgb(var(--c-primary-dark) / .3), transparent 70%); }
+  /* Fine dot texture on white, only in the top right corner. */
+  .surface-dots::before { background-image: radial-gradient(rgb(var(--c-primary) / .10) 1px, transparent 1.2px); background-size: 20px 20px; -webkit-mask-image: radial-gradient(40% 60% at 100% 0%, #000, transparent 75%); mask-image: radial-gradient(40% 60% at 100% 0%, #000, transparent 75%); }
+
+  /* ---- Custom illustration interactions: artwork untouched, each icon moves in a way that suits what it draws ---- */
+  .svc-icon { overflow: visible; transition: transform var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out); }
+  .svc-icon .i-accent, .svc-icon .i-part { transition: transform var(--dur-base) var(--ease-out), stroke var(--dur-base) var(--ease-out); transform-box: fill-box; transform-origin: center; }
+  @media (hover: hover) {
+    .svc-card:hover .svc-icon, .svc-card:focus-visible .svc-icon { transform: scale(var(--icon-zoom)); color: rgb(255 255 255); }
+    .svc-card:hover .svc-icon .i-accent, .svc-card:focus-visible .svc-icon .i-accent { stroke: rgb(var(--c-background)); }
+    .svc-card:hover .svc-icon[data-icon='emergency-plumbing'] .i-accent { transform: translateY(1.2px); }
+    .svc-card:hover .svc-icon[data-icon='drain-cleaning'] .i-accent { transform: translateX(1.5px); }
+    .svc-card:hover .svc-icon[data-icon='water-heater'] .i-accent { transform: translateY(-1.2px); }
+    .svc-card:hover .svc-icon[data-icon='sewer-repair'] .i-accent { transform: translateX(-.8px); }
+    .svc-card:hover .svc-icon[data-icon='emergency-electrician'] { transform: scale(var(--icon-zoom)) rotate(-4deg); }
+    .svc-card:hover .svc-icon[data-icon='emergency-electrician'] .i-accent { transform: scale(1.15); }
+    .svc-card:hover .svc-icon[data-icon='electrical-repair'] .i-accent { transform: translateY(-.7px); }
+    .svc-card:hover .svc-icon[data-icon='panel-upgrade'] .i-accent { transform: translateY(.7px); }
+    .svc-card:hover .svc-icon[data-icon='ev-charger'] { transform: scale(var(--icon-zoom)) rotate(-3deg); }
+    .svc-card:hover .svc-icon[data-icon='ev-charger'] .i-accent { transform: scale(1.12); }
+  }
+  /* Trust icons (light surface): a small, quiet response to hovering the row. */
+  .trust-icon { overflow: visible; }
+  .trust-icon .i-accent { transition: transform var(--dur-base) var(--ease-out); transform-box: fill-box; transform-origin: center; }
+  @media (hover: hover) {
+    .trust-item:hover .trust-icon[data-icon='local'] .i-accent { transform: translateY(-1px); }
+    .trust-item:hover .trust-icon[data-icon='honest'] .i-accent { transform: translateX(.6px) scale(1.06); }
+    .trust-item:hover .trust-icon[data-icon='one-company'] .i-accent { transform: rotate(6deg); }
+    .trust-item:hover .trust-icon[data-icon='warranty'] .i-accent { transform: scale(1.1); }
+  }
+}
+
+/* Scroll reveal: fade in with a short upward move. Only hidden when JS has flagged the document, so content never disappears without JS.
+   Opacity + transform only (no layout shift). <Reveal> adds .is-visible once, then stops observing. */
+.reveal { transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out); }
+.js .reveal:not(.is-visible) { opacity: 0; transform: translateY(var(--reveal-y)); }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js .reveal:not(.is-visible) { opacity: 1; transform: none; }
+  .reveal { transition-delay: 0s !important; }
+}
+
+/* Align full-bleed bands with the 1240px container: same gutters as .container-x (1rem / 1.5rem / 2rem).
+   `html` prefix raises specificity so these beat Tailwind's responsive px-* utilities, which are emitted later. */
+html .edge-l { padding-left: 1rem; }
+html .edge-r { padding-right: 1rem; }
+@media (min-width: 640px) { html .edge-l { padding-left: 1.5rem; } html .edge-r { padding-right: 1.5rem; } }
+@media (min-width: 1024px) {
+  html .edge-l { padding-left: max(2rem, calc((100vw - 1240px) / 2 + 2rem)); }
+  html .edge-r { padding-right: max(2rem, calc((100vw - 1240px) / 2 + 2rem)); }
+}
+
+/* One orchestrated moment: hero entrance */
+@keyframes rise { from { opacity: 0; transform: translateY(var(--reveal-y)); } to { opacity: 1; transform: none; } }
+.rise { animation: rise var(--dur-reveal) var(--ease-out) both; }
+
+/* Floating call bar / help widget step aside while the contact section is on screen, so they never cover form controls. */
+.float-cta { transition: opacity .2s ease, visibility .2s; }
+html[data-contact-visible] .float-cta { opacity: 0; visibility: hidden; pointer-events: none; }

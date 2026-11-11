@@ -1,0 +1,42 @@
+{
+  "waterHeater": {
+    "remote": "https://danikaplumbing.com/wp-content/uploads/2025/12/Tank-water-heaters.webp",
+    "local": "Tank-water-heaters.webp",
+    "alt": "Danika plumber installing a tank water heater in an Everett home"
+  },
+  "drain": {
+    "remote": "https://danikaplumbing.com/wp-content/uploads/2026/03/drain-cleaning.jpeg",
+    "local": "drain-cleaning.jpeg",
+    "alt": "Danika plumber clearing a toilet drain line with a drain machine"
+  },
+  "waterLines": {
+    "remote": "https://danikaplumbing.com/wp-content/uploads/2025/12/water-lines.jpeg",
+    "local": "water-lines.jpeg",
+    "alt": "New copper and PEX water supply lines run through open wall framing"
+  },
+  "van": {
+    "remote": "https://danikaplumbing.com/wp-content/uploads/2021/11/service-truck.png",
+    "local": "service-truck.png",
+    "alt": "Danika Plumbing & Electric service van driven by an emergency plumber"
+  },
+  "project1": {
+    "remote": "https://danikaplumbing.com/wp-content/uploads/2026/10/after-abs-drain-repair-stainless-couplings-everett-wa.jpg",
+    "local": "after-abs-drain-repair-stainless-couplings-everett-wa.jpg",
+    "alt": "New ABS drain section with stainless couplings under an Everett, WA home"
+  },
+  "project2": {
+    "remote": "https://danikaplumbing.com/wp-content/uploads/2026/10/after-new-electric-water-heater-expansion-tank-everett-wa.jpg",
+    "local": "after-new-electric-water-heater-expansion-tank-everett-wa.jpg",
+    "alt": "New Rheem electric water heater with expansion tank in a bedroom closet in Everett, WA"
+  },
+  "project3": {
+    "remote": "https://danikaplumbing.com/wp-content/uploads/2026/09/after-lead-free-ball-valve-replacement-bothell-wa.jpg",
+    "local": "after-lead-free-ball-valve-replacement-bothell-wa.jpg",
+    "alt": "New lead-free brass ball valve replacing a leaking gate valve on a water line in Bothell, WA"
+  },
+  "project4": {
+    "remote": "https://danikaplumbing.com/wp-content/uploads/2026/09/after-copper-water-heater-repipe-marysville-wa.jpg",
+    "local": "after-copper-water-heater-repipe-marysville-wa.jpg",
+    "alt": "Water heater repiped from galvanized to copper with brass fittings in Marysville, WA"
+  }
+}

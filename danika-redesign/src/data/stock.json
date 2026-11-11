@@ -1,0 +1,29 @@
+{
+  "electricalPanel": {
+    "file": "electrician-breaker-panel.webp",
+    "width": 1600,
+    "height": 700,
+    "alt": "Electrician in safety glasses and gloves working on a residential breaker panel",
+    "search": "electrician working at residential breaker panel, home electrical panel upgrade",
+    "credit": "",
+    "label": "Illustrative image"
+  },
+  "plumberUnderSink": {
+    "file": "plumber-under-sink.webp",
+    "width": 736,
+    "height": 1104,
+    "alt": "Plumber kneeling beside a bathroom sink, repairing the drain trap with a toolbox open on the floor",
+    "search": "",
+    "credit": "",
+    "label": "Illustrative image"
+  },
+  "electricianWiring": {
+    "file": "electrician-wiring-wall.webp",
+    "width": 736,
+    "height": 1104,
+    "alt": "Electrician in work gloves sorting wiring inside an open wall next to new outlets",
+    "search": "",
+    "credit": "",
+    "label": "Illustrative image"
+  }
+}
